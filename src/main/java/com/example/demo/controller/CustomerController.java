@@ -36,5 +36,20 @@ public class CustomerController {
     public Customer createCustomer(@RequestBody Customer customer) {
         return customerRepository.save(customer);
     }
-
+    @DeleteMapping("/customers/{id}")
+    public Map<String, String> deleteCustomer(@PathVariable(value = "id") long id) throws Exception {
+        Customer customer = customerRepository.findById(id).orElseThrow(() -> new Exception("ID: " + id + " not found" ));
+        customerRepository.delete(customer);
+        Map<String, String> deleteCustomer = new HashMap<>();
+        deleteCustomer.put("Person is deleted", "by id: " + id);
+        return deleteCustomer;
+    }
+    @PutMapping("customers/{id}")
+    public ResponseEntity<Customer> updateCustomer(@PathVariable(value = "id") long id, @RequestBody Customer customerDetails) throws Exception {
+        Customer customer = customerRepository.findById(id).orElseThrow(() -> new Exception("ID: " + id + " not found" ));
+        customer.setName(customerDetails.getName());
+        customer.setEmail(customerDetails.getEmail());
+        final Customer updateCustomer = customerRepository.save(customer);
+        return ResponseEntity.ok(updateCustomer);
+    }
 }
