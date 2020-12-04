@@ -27,5 +27,14 @@ public class CustomerController {
     public List<Customer> getCustomers() {
         return customerRepository.findAll();
     }
+    @GetMapping("/customers/{id}")
+    public ResponseEntity<Customer> getCustomer(@PathVariable long id) throws Exception {
+        Customer customer = customerRepository.findById(id).orElseThrow(() -> new Exception("ID: " + id + " not found" ));
+        return ResponseEntity.ok().body(customer);
+    }
+    @PostMapping("/customers")
+    public Customer createCustomer(@RequestBody Customer customer) {
+        return customerRepository.save(customer);
+    }
 
 }
