@@ -23,5 +23,9 @@ public class CustomerController {
         model.addAttribute("appName", appName);
         return "home";
     }
+    @GetMapping("/customers")
+    public List<Customer> getCustomers() {
+        return customerRepository.findAll();
+    }
 
 }
